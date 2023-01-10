@@ -4,6 +4,18 @@ from django.shortcuts import render
 from .models import LotteryTicket
 from django.http import HttpResponse
 
+from daraja_mpesa.mpesa import Mpesa
+
+def initiate_stk_push(phone_number, amount):
+    phone_number = phone_number
+    amount = amount
+
+    # The Mpesa class will automatically use the appropriate sandbox or production environment
+    mpesa = Mpesa("<consumer_key>", "<consumer_secret>")
+    stk_response = mpesa.stk_push(amount, phone_number, "Payment for Lottery Ticket")
+    return stk_response
+
+
 def purchase_ticket(request):
     phone_number = request.GET.get('phone_number')
     ticket_price = 50
