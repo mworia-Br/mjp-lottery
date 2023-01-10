@@ -9,7 +9,10 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+# settings.py
 
+import os
+from celery import Celery
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -104,6 +107,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Configure Celery
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ussdlottery.settings')
+
+app = Celery('ussdlottery')
+app.config_from_object('django.conf:settings', namespace='CELERY')
+app.autodiscover_tasks()
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
