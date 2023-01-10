@@ -25,11 +25,7 @@ def ussd_handler(request):
             # calling the purchase_ticket view
             return redirect('purchase_ticket', phone_number=phone_number)
         elif response[1] == "2":
-            winner = pick_winner()
-            if winner:
-                message = f'The winner of the daily draw is {winner}'
-            else:
-                message = 'No tickets were sold for today\'s draw'
+            message = 'Feature work in progress, check again soon'
             return JsonResponse({"response": message})
         else:
             message = "Invalid input. Please try again."
