@@ -1,10 +1,40 @@
 import random
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import LotteryTicket, LotteryWinner
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 
 from daraja_mpesa.mpesa import Mpesa
+from africastalking.AfricasTalkingGateway import AfricasTalkingGateway
+
+def ussd_handler(request):
+    session_id = request.GET.get("sessionId")
+    service_code = request.GET.get("serviceCode")
+    phone_number = request.GET.get("phoneNumber")
+    text = request.GET.get("text")
+    
+    response = text.split("*")
+    menu_level = len(response)
+
+    if menu_level == 1:
+        message = "Please select option:\n1. Purchase Ticket\n2. Check daily draw results"
+        return JsonResponse({"response": message})
+
+    elif menu_level == 2:
+        if response[1] == "1":
+            # calling the purchase_ticket view
+            return redirect('purchase_ticket', phone_number=phone_number)
+        elif response[1] == "2":
+            winner = pick_winner()
+            if winner:
+                message = f'The winner of the daily draw is {winner}'
+            else:
+                message = 'No tickets were sold for today\'s draw'
+            return JsonResponse({"response": message})
+        else:
+            message = "Invalid input. Please try again."
+            return JsonResponse({"response": message})
+
 
 def initiate_stk_push(phone_number, amount):
     phone_number = phone_number
@@ -15,8 +45,7 @@ def initiate_stk_push(phone_number, amount):
     stk_response = mpesa.stk_push(amount, phone_number, "Payment for Lottery Ticket")
     return stk_response
 
-def purchase_ticket(request):
-    phone_number = request.GET.get('phone_number')
+def purchase_ticket(request, phone_number):
     ticket_price = 50
     amount = ticket_price
 
