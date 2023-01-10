@@ -16,7 +16,6 @@ def purchase_ticket(request):
     )
     return HttpResponse(f'Ticket purchased for {phone_number}')
 
-
 def pick_winner():
     purchased_tickets = LotteryTicket.objects.all()
     if purchased_tickets.count() > 0:
@@ -24,3 +23,12 @@ def pick_winner():
         return winner.player_phone_number
     else:
         return None
+
+def daily_draw(request):
+    winner = pick_winner()
+    total_collected = LotteryTicket.objects.count() * 50
+    amount_to_be_won = total_collected * 0.3
+    if winner:
+        return HttpResponse(f'The winner of the daily draw is {winner}, winning ksh{amount_to_be_won}')
+    else:
+        return HttpResponse(f'No tickets were sold for today\'s draw')
