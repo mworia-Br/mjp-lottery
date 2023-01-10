@@ -51,9 +51,8 @@ def daily_draw(request):
         amount_to_be_won = total_collected * 0.3
         discard_previous_tickets()
         # saving winner to db
-        winner = LotteryWinner.objects.create(name='', phone_number=winner_phone_number,amount_won=amount_to_be_won)
+        winner = LotteryWinner.objects.create(phone_number=winner_phone_number,amount_won=amount_to_be_won)
         return HttpResponse(f'The winner of the daily draw is {winner_phone_number}, winning ksh{amount_to_be_won}')
     else:
         return HttpResponse(f'No tickets were sold for today\'s draw')
 
-        
