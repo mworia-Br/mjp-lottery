@@ -81,7 +81,25 @@ def daily_draw(request):
         discard_previous_tickets()
         # saving winner to db
         winner = LotteryWinner.objects.create(phone_number=winner_phone_number,amount_won=amount_to_be_won)
+        send_winner_alert(winner_phone_number, amount_to_be_won)
         return HttpResponse(f'The winner of the daily draw is {winner_phone_number}, winning ksh{amount_to_be_won}')
     else:
         return HttpResponse(f'No tickets were sold for today\'s draw')
+
+def send_winner_alert(phone_number, amount_won):
+    # Initialize the SDK
+    gateway = AfricasTalkingGateway("<username>", "<api_key>")
+    
+    # Define the message
+    message = f'Congratulations! You have won Ksh{amount_won} in the daily lottery draw. Thank you for participating'
+    
+    # Send the message
+    try:
+        results = gateway.sendMessage(phone_number, message)
+        for recipient in results:
+            print(f'number={recipient["number"]},status={recipient["status"]},messageId={recipient["messageId"]}')
+    except Exception as e:
+        print(f'Encountered an error while sending: {e}')
+
+
 
