@@ -19,9 +19,11 @@ def initiate_stk_push(phone_number, amount):
 def purchase_ticket(request):
     phone_number = request.GET.get('phone_number')
     ticket_price = 50
+    amount = ticket_price
 
     # code to initiate mpesa transaction and handle the response
     # ...
+    initiate_stk_push(phone_number, amount)
 
     lottery_ticket = LotteryTicket.objects.create(
         player_phone_number=phone_number
