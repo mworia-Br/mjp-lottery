@@ -21,14 +21,18 @@ def purchase_ticket(request):
     ticket_price = 50
     amount = ticket_price
 
-    # code to initiate mpesa transaction and handle the response
-    # ...
-    initiate_stk_push(phone_number, amount)
+    # initiate STK push
+    stk_response = initiate_stk_push(phone_number, amount)
 
-    lottery_ticket = LotteryTicket.objects.create(
+    if stk_response['response_code'] == '0':
+        # Transaction was successful
+        lottery_ticket = LotteryTicket.objects.create(
         player_phone_number=phone_number
-    )
-    return HttpResponse(f'Ticket purchased for {phone_number}')
+        )
+        return HttpResponse(f'Ticket purchased for {phone_number}. Response: {stk_response}')
+    else:
+        # Transaction failed
+        return HttpResponse(f'Transaction failed with code: {stk_response["response_code"]}')
 
 def pick_winner():
     purchased_tickets = LotteryTicket.objects.all()
