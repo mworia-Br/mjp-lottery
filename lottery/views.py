@@ -37,7 +37,7 @@ def initiate_stk_push(phone_number, amount):
     amount = amount
 
     # The Mpesa class will automatically use the appropriate sandbox or production environment
-    mpesa = Mpesa("<consumer_key>", "<consumer_secret>")
+    mpesa = Mpesa(settings.MPESA_CONSUMER_KEY, settings.MPESA_CONSUMER_SECRET)
     stk_response = mpesa.stk_push(amount, phone_number, "Payment for Lottery Ticket")
     return stk_response
 
