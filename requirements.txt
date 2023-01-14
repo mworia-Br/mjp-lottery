@@ -14,9 +14,8 @@ click-repl==0.2.0
 colorama==0.4.6
 contextlib2==21.6.0
 cryptography==39.0.0
-daraja-mpesa==1.2.1
 Django==4.1.5
-django-daraja==1.2.0
+djangorestframework==3.14.0
 future==0.18.2
 idna==3.4
 kombu==5.2.4
