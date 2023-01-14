@@ -97,5 +97,9 @@ def send_winner_alert(phone_number, amount_won):
     except Exception as e:
         print(f'Encountered an error while sending: {e}')
 
-
+def daily_draw_view(request):
+    if request.method == 'POST':
+        daily_draw(request)
+        return redirect('lottery_ticket_changelist')
+    return render(request, 'daily_draw.html')
 
