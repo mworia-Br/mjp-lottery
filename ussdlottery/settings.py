@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'daraja',
+    'rest_framework',
     'lottery',
 ]
 
@@ -54,6 +54,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
 
 ROOT_URLCONF = 'ussdlottery.urls'
 
@@ -138,8 +146,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MPESA_CONSUMER_KEY = "F6feovJBWjm4k0UaMxxAIcpOaLSAFpRm"
-MPESA_CONSUMER_SECRET = "7p0IZnUSFPVTjPBf"
-MPESA_STK_CALLBACK_URL = "https://braycodes.pythonanywhere.com/stk-push-callback"
-MPESA_ENV = "sandbox"
