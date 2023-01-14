@@ -1,0 +1,8 @@
+{% block content %}
+<h1>Daily Draw</h1>
+
+<form method="post" action="{% url 'daily_draw' %}">
+    {% csrf_token %}
+    <input type="submit" value="Conduct Daily Draw">
+</form>
+{% endblock %}
